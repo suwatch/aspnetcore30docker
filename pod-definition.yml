@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: aspnetcore30-pod
+    labels:
+        app: aspnetcore30-app
+        type: aspnetcore30-type
+spec:
+    containers:
+      - name: aspnetcore30-container
+        image: suwatch01/aspnetcore30:latest
+
