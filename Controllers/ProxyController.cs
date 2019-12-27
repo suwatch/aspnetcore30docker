@@ -27,7 +27,24 @@ namespace aspnetcore30docker.Controllers
         public async Task<IActionResult> Invoke()
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StringContent($"Hello world {DateTime.UtcNow}Z!{Environment.NewLine}", Encoding.UTF8, "text/plain");
+            var strb = new StringBuilder();
+
+            var dict = Environment.GetEnvironmentVariables();
+            strb.AppendLine("--- Environments ---");
+            foreach (var key in dict.Keys)
+            {
+                strb.AppendLine($"{key}={dict[key]}");
+            }
+            strb.AppendLine();
+
+            strb.AppendLine("--- Headers ---");
+            foreach (var header in Request.Headers)
+            {
+                strb.AppendLine($"{header.Key}: {header.Value}");
+            }
+            strb.AppendLine();
+
+            response.Content = new StringContent(strb.ToString(), Encoding.UTF8, "text/plain");
             return await Task.FromResult(new HttpResponseMessageResult(response));
         }
 
